@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {MatTableModule} from '@angular/material/table';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 @Component({
   selector: 'app-table',
@@ -10,7 +12,7 @@ export class TableComponent implements OnInit {
 
 
 
- dataSource: any[] = [
+  ELEMENT_DATA: any[] = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
   {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
   {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
@@ -24,10 +26,17 @@ export class TableComponent implements OnInit {
 ];
 
 displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  dataSource: any;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   }
 
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }
